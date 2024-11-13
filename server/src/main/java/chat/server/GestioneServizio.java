@@ -68,7 +68,7 @@ public class GestioneServizio extends Thread{
                         
                         break;
 
-                        case "G":
+                    case "G":
 
                         lista = "";
                         System.out.println("raccolgo nomiG");
@@ -81,6 +81,20 @@ public class GestioneServizio extends Thread{
                         out.writeBytes(lista + "\n");
                         
                         break;
+
+                    case "SP":
+                        
+                        String vals[] = cont.split(";");
+
+                        for (int i = 0; i < dC.getThreads().size(); i++) {
+                            if (dC.getThreads().get(i).getName().equals(" " + vals[0])) {
+                                dC.getThreads().get(i).inviaClient(vals[1]);
+                                out.writeBytes("OK\n");
+                                break;
+                            }
+                        }
+                        out.writeBytes("NONE\n");
+                        break;
                 
                     default:
                         break;
@@ -90,4 +104,15 @@ public class GestioneServizio extends Thread{
             e.printStackTrace();
         }
     }
+
+    public void inviaClient(String msg){
+
+        try {
+            out.writeBytes(msg + "\n");
+            
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+    }
+
 }
