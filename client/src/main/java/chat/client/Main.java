@@ -80,6 +80,7 @@ public class Main {
                     System.out.println("Scrivi il nome della persona con cui vuoi comunicare");
                     v1 = input.nextLine();
                     System.out.println("Inserisci il messaggio da scrivere");
+                    System.out.println("Apro thread");
                     tc.start();
                     do
                     {
@@ -92,6 +93,7 @@ public class Main {
                             out.writeBytes(op + v1 + "; "+v2+"\n");
                         }
                     }while (!v2.equals("!"));
+                    System.out.println("chiudo thread");
                     tc.interrupt();
 
                     break;

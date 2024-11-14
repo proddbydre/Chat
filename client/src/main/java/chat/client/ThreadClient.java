@@ -25,7 +25,13 @@ public class ThreadClient extends Thread {
 
             do 
             {
-                System.out.println(in.readLine());
+                String msg = in.readLine();
+
+                if (msg.equals("NONE")) {
+                    System.out.println("Destinatario non trovato, uscire dalla chat digitando '!'");
+                }
+
+                System.out.println(msg);
             } while (true);
             
         } catch (Exception e) {
