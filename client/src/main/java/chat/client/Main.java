@@ -90,21 +90,6 @@ public class Main {
 
                     
                             out.writeBytes(op + v1 + "; "+v2+"\n");
-                            String r = in.readLine();
-
-
-                            if(r.equals("KO"))
-                            {
-                                System.out.println("ci sono stati dei problemi nello scrivere il messaggio");
-                            }
-                            else if(r.equals("NONE"))
-                            {
-                                System.out.println("non è stato trovato l'utente desiderato");
-                            }
-                            else
-                            {
-                                System.out.println("daje");
-                            }
                         }
                     }while (!v2.equals("!"));
                     tc.interrupt();

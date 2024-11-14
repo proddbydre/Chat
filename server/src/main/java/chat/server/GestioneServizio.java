@@ -42,6 +42,7 @@ public class GestioneServizio extends Thread{
             out.writeBytes("OK\n");
             this.setName(nome);
             dC.getThreads().add(this);
+            dC.getUtenti().add(nome);
             System.out.println("Nome aggiunto: " + this.getName());
 
             String msg;
@@ -90,14 +91,17 @@ public class GestioneServizio extends Thread{
                         
                         String vals[] = cont.split(";");
 
+                        boolean inviato = false;
+
                         for (int i = 0; i < dC.getThreads().size(); i++) {
                             if (dC.getThreads().get(i).getName().equals(vals[0].trim())) {
-                                dC.getThreads().get(i).inviaClient(vals[1].trim());
-                                out.writeBytes("OK\n");
-                                break;
+                                dC.getThreads().get(i).inviaClient(this.getName() + ": " + vals[1].trim());
+                                inviato = true;
                             }
                         }
-                        out.writeBytes("NONE\n");
+                        if (!inviato) {
+                            out.writeBytes("NONE\n");
+                        }
                         break;
                 
                     default:
