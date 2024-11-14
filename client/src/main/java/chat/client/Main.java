@@ -11,13 +11,12 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) throws UnknownHostException, IOException {
         System.out.println("client partito");
-        Socket s0 = new Socket("172.21.231.92", 3000); //socker che dice indirizzo e porta del server a cui connetersi
+        Socket s0 = new Socket("localhost", 3000); //socker che dice indirizzo e porta del server a cui connetersi
 
         BufferedReader in = new BufferedReader(new InputStreamReader(s0.getInputStream())); //stream dati in
         DataOutputStream out = new DataOutputStream(s0.getOutputStream()); //stream dati out
 
         ThreadClient tc = new ThreadClient(s0);
-        tc.start();
 
         Scanner input = new Scanner(System.in); //scanner input da tastiera
 
@@ -60,7 +59,7 @@ public class Main {
 
                     out.writeBytes("P- " + "\n");
                     String nome = in.readLine();
-                    String[] nomi = nome.split(";");
+                    String nomi[] = nome.split(";");
 
                     if (nomi.length == 1) 
                     {
@@ -73,7 +72,7 @@ public class Main {
                         {
                             if(!nomi[i].equals(username))
                             {
-                                System.out.println(nomi[i]); 
+                                System.out.println(nomi[i] + "\n"); 
                             }
                         }
                     }
@@ -81,6 +80,7 @@ public class Main {
                     System.out.println("Scrivi il nome della persona con cui vuoi comunicare");
                     v1 = input.nextLine();
                     System.out.println("Inserisci il messaggio da scrivere");
+                    tc.start();
                     do
                     {
                         v2 = input.nextLine();
@@ -90,24 +90,24 @@ public class Main {
 
                     
                             out.writeBytes(op + v1 + "; "+v2+"\n");
-                        String r = in.readLine();
+                            String r = in.readLine();
 
 
-                        if(r.equals("KO"))
-                        {
-                            System.out.println("ci sono stati dei problemi nello scrivere il messaggio");
-                        }
-                        else if(r.equals("NONE"))
-                        {
-                            System.out.println("non è stato trovato l'utente desiderato");
-                        }
-                        else
-                        {
-                            System.out.println("daje");
-                        
-                        }
+                            if(r.equals("KO"))
+                            {
+                                System.out.println("ci sono stati dei problemi nello scrivere il messaggio");
+                            }
+                            else if(r.equals("NONE"))
+                            {
+                                System.out.println("non è stato trovato l'utente desiderato");
+                            }
+                            else
+                            {
+                                System.out.println("daje");
+                            }
                         }
                     }while (!v2.equals("!"));
+                    tc.interrupt();
 
                     break;
 

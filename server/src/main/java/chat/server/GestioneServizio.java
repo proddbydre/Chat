@@ -47,9 +47,13 @@ public class GestioneServizio extends Thread{
             String msg;
             do {
                 msg = in.readLine();
+                System.out.println("Messaggio: " + msg);
 
                 String op = msg.split("-")[0];
-                String cont = msg.split("-")[1];
+                System.out.println("op: " + op);
+
+                String cont = msg.split("-")[1].trim();
+                System.out.println("cont: " + cont);
 
                 String lista;
 
@@ -87,8 +91,8 @@ public class GestioneServizio extends Thread{
                         String vals[] = cont.split(";");
 
                         for (int i = 0; i < dC.getThreads().size(); i++) {
-                            if (dC.getThreads().get(i).getName().equals(" " + vals[0])) {
-                                dC.getThreads().get(i).inviaClient(vals[1]);
+                            if (dC.getThreads().get(i).getName().equals(vals[0].trim())) {
+                                dC.getThreads().get(i).inviaClient(vals[1].trim());
                                 out.writeBytes("OK\n");
                                 break;
                             }
