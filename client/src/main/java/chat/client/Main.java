@@ -16,7 +16,7 @@ public class Main {
         BufferedReader in = new BufferedReader(new InputStreamReader(s0.getInputStream())); //stream dati in
         DataOutputStream out = new DataOutputStream(s0.getOutputStream()); //stream dati out
 
-        ThreadClient tc = new ThreadClient(s0);
+        ThreadClient tc;
 
         Scanner input = new Scanner(System.in); //scanner input da tastiera
 
@@ -81,6 +81,7 @@ public class Main {
                     v1 = input.nextLine();
                     System.out.println("Inserisci il messaggio da scrivere");
                     System.out.println("Apro thread");
+                    tc = new ThreadClient(s0);
                     tc.start();
                     do
                     {
@@ -94,7 +95,7 @@ public class Main {
                         }
                     }while (!v2.equals("!"));
                     System.out.println("chiudo thread");
-                    tc.interrupt();
+                    tc.setFlag(false);
 
                     break;
 
