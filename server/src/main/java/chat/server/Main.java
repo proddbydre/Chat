@@ -8,6 +8,7 @@ import java.util.Random;
 public class Main {
     public static void main(String[] args) throws IOException {
         System.out.println("Server in ascolto");
+        @SuppressWarnings("resource")
         ServerSocket sS0 = new ServerSocket(3000); //Porta dove il server aspetta richiesta
         DatiCondivisi dC = new DatiCondivisi();
         do {
