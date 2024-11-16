@@ -8,13 +8,14 @@ import java.net.Socket;
 
 public class ThreadClient extends Thread {
     Socket s0;
+    String altroUtente;
     BufferedReader in;
     DataOutputStream out;
     Boolean flag;
 
-    public ThreadClient(Socket s0) {
+    public ThreadClient(Socket s0, String altroUtente) {
         this.s0 = s0;
-
+        this.altroUtente = altroUtente;
     }
 
     public void setFlag(Boolean flag) {
@@ -39,7 +40,9 @@ public class ThreadClient extends Thread {
                     if (msg.equals("NONE")) {
                         System.out.println("Destinatario non trovato, uscire dalla chat digitando '!'");
                     }else{
-                        System.out.println(msg);
+                        if (msg.split(":")[0].equals(altroUtente)) {
+                            System.out.println(msg);
+                        }
                     }
                 } else {
                     // Se non ci sono dati, aggiungi un breve ritardo per evitare cicli di polling ad alta intensità

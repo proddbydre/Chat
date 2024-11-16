@@ -81,7 +81,7 @@ public class Main {
                     v1 = input.nextLine();
                     System.out.println("Inserisci il messaggio da scrivere");
                     System.out.println("Apro thread");
-                    tc = new ThreadClient(s0);
+                    tc = new ThreadClient(s0, v1);
                     tc.start();
                     do
                     {
