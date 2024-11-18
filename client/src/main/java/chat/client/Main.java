@@ -58,7 +58,14 @@ public class Main {
                 case "1":
 
                     out.writeBytes("P- " + "\n");
-                    String nome = in.readLine();
+                    String nome;
+                    do {
+                        nome = in.readLine();
+                    } while (!nome.startsWith("USERS:"));
+
+                    nome = nome.replace("USERS:", "");
+
+                    System.out.println("Nomi ricevuti: " + nome);
                     String nomi[] = nome.split(";");
 
                     if (nomi.length == 1) 

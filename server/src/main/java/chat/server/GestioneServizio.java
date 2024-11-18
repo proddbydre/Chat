@@ -69,7 +69,7 @@ public class GestioneServizio extends Thread{
 
                         System.out.println("invio nomi");
 
-                        out.writeBytes(lista + "\n");
+                        out.writeBytes("USERS:" + lista + "\n");
                         
                         break;
 
