@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.List;
 
 public class GestioneServizio extends Thread{
     
@@ -96,11 +97,34 @@ public class GestioneServizio extends Thread{
                         for (int i = 0; i < dC.getThreads().size(); i++) {
                             if (dC.getThreads().get(i).getName().equals(vals[0].trim())) {
                                 dC.getThreads().get(i).inviaClient(this.getName() + ": " + vals[1].trim());
+                                dC.salvaMessaggio(this.getName(), vals[0].trim(), vals[1]);
                                 inviato = true;
                             }
                         }
                         if (!inviato) {
                             out.writeBytes("NONE\n");
+                        }
+                        break;
+
+                    case "VP":
+                        // Ottiene la cronologia con l'utente specificato
+                        String altroUtente = cont.trim();
+                        List<Messaggio> cronologia = dC.getCronologiaChat(this.getName(), altroUtente);
+                        
+                        // Costruisce la stringa di risposta
+                        StringBuilder cronologiaStr = new StringBuilder();
+                        for (Messaggio m : cronologia) {
+                            cronologiaStr.append(m.getMittente())
+                                       .append(": ")
+                                       .append(m.getContenuto())
+                                       .append("\\|\\|\\|");
+                        }
+                        
+                        // Se non ci sono messaggi, invia "NONE"
+                        if (cronologia.isEmpty()) {
+                            out.writeBytes("NONE\n");
+                        } else {
+                            out.writeBytes(cronologiaStr.toString() + "\n");
                         }
                         break;
                 

@@ -86,6 +86,21 @@ public class Main {
 
                     System.out.println("Scrivi il nome della persona con cui vuoi comunicare");
                     v1 = input.nextLine();
+                    out.writeBytes("VP- " + v1 + "\n");
+                    String ris = in.readLine();
+                    if (ris.equals("NONE")) {
+                        System.out.println("No msg precedenti");
+                    } else{
+                        String[] messaggi = ris.split("\\|\\|\\|");
+    
+                        System.out.println("Cronologia messaggi:");
+                        for (String messaggio : messaggi) {
+                            if (!messaggio.trim().isEmpty()) {
+                                messaggio = messaggio.replace("\\|\\|\\|", "\n");
+                                System.out.println(messaggio);
+                            }
+                        }
+                    }
                     System.out.println("Inserisci il messaggio da scrivere");
                     System.out.println("Apro thread");
                     tc = new ThreadClient(s0, v1);
