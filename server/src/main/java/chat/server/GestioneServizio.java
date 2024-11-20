@@ -114,7 +114,9 @@ public class GestioneServizio extends Thread{
                     case "ST":
                         
                         for (int i = 0; i < dC.getThreads().size(); i++) {
-                            dC.getThreads().get(i).inviaClient(this.getName() + ": " + cont.trim());
+                            if (!dC.getThreads().get(i).equals(this.getName())) {
+                                dC.getThreads().get(i).inviaClient(this.getName() + ": " + cont.trim());
+                            }
                             out.writeBytes("OK\n");
                         }
                         break;

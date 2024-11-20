@@ -135,7 +135,7 @@ public class Main {
 
                 case "3":
 
-                    out.writeBytes("VT-" + "\n");
+                    out.writeBytes("VT- " + "\n");
 
                     String risp = in.readLine();
                     if (risp.equals("NONE")) {
