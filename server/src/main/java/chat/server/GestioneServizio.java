@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GestioneServizio extends Thread{
@@ -58,6 +59,7 @@ public class GestioneServizio extends Thread{
                 System.out.println("cont: " + cont);
 
                 String lista;
+                String altroUtente;
 
                 switch (op) {
                     case "P":
@@ -109,9 +111,17 @@ public class GestioneServizio extends Thread{
                         }
                         break;
 
+                    case "ST":
+                        
+                        for (int i = 0; i < dC.getThreads().size(); i++) {
+                            dC.getThreads().get(i).inviaClient(this.getName() + ": " + cont.trim());
+                            out.writeBytes("OK\n");
+                        }
+                        break;
+
                     case "VP":
                         // Ottiene la cronologia con l'utente specificato
-                        String altroUtente = cont.trim();
+                        altroUtente = cont.trim();
                         List<Messaggio> cronologia = dC.getCronologiaChat(this.getName(), altroUtente);
                         
                         // Costruisce la stringa di risposta
@@ -128,6 +138,24 @@ public class GestioneServizio extends Thread{
                             out.writeBytes("NONE\n");
                         } else {
                             out.writeBytes(cronologiaStr.toString() + "\n");
+                        }
+                        break;
+
+                    case "VT":
+                        altroUtente = cont.trim();
+                        ArrayList<Messaggio> cronologiaGlobale = dC.getCronologiaGlobale();
+                        if (cronologiaGlobale.isEmpty()) {
+                            out.writeBytes("NONE\n");
+                        } else {
+                            StringBuilder cronGlobStr = new StringBuilder();
+                            for (Messaggio m : cronologiaGlobale) {
+                                cronGlobStr.append(m.getMittente())
+                                .append(": ")
+                                .append(m.getContenuto())
+                                .append("\\|\\|\\|");
+                            }
+
+                            out.writeBytes(cronGlobStr.toString() + "\n");
                         }
                         break;
                 

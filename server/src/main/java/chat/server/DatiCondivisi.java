@@ -9,12 +9,13 @@ public class DatiCondivisi {
     ArrayList<Gruppo> gruppi = new ArrayList<Gruppo>();
     ArrayList<GestioneServizio> threads = new ArrayList<GestioneServizio>();
     ArrayList<Messaggio> messaggi = new ArrayList<Messaggio>();
+    ArrayList<Messaggio> messaggiGlobali = new ArrayList<Messaggio>();
 
     public DatiCondivisi(){
     }
 
     public void salvaMessaggio(String mittente, String destinatario, String contenuto) {
-        Messaggio msg = new Messaggio(mittente, destinatario, contenuto);
+        Messaggio msg = new Messaggio(mittente, contenuto);
         messaggi.add(msg);
     }
 
@@ -24,6 +25,15 @@ public class DatiCondivisi {
                 (msg.getMittente().equals(utente1) && msg.getDestinatario().equals(utente2)) ||
                 (msg.getMittente().equals(utente2) && msg.getDestinatario().equals(utente1)))
             .collect(Collectors.toList());
+    }
+
+    public void salvaMGlobale(String mittente, String contenuto){
+        Messaggio msg = new Messaggio(mittente, contenuto);
+        messaggiGlobali.add(msg);
+    }
+
+    public ArrayList<Messaggio> getCronologiaGlobale(){
+        return messaggiGlobali;
     }
 
     public ArrayList<String> getUtenti() {

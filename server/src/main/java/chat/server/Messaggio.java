@@ -13,6 +13,15 @@ public class Messaggio {
         this.timestamp = System.currentTimeMillis();
     }
 
+    
+
+    public Messaggio(String mittente, String contenuto) {
+        this.mittente = mittente;
+        this.contenuto = contenuto;
+    }
+
+
+
     public String getMittente() {
         return mittente;
     }
