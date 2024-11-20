@@ -40,7 +40,8 @@ public class ThreadClient extends Thread {
                     if (msg.equals("OK")) {
                     } else if (msg.split(":")[1].equals(" |||")) {
                     }else{
-                        if (msg.split(":")[0].equals(altroUtente)) {
+                        if (msg.split(":")[0].equals(altroUtente) || altroUtente.equals("^")) 
+                        {
                             System.out.println(msg);
                         }
                     }

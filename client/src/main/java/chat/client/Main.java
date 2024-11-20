@@ -137,6 +137,39 @@ public class Main {
 
                     out.writeBytes("VT-" + "\n");
 
+                    String risp = in.readLine();
+                    if (risp.equals("NONE")) {
+                        System.out.println("No msg precedenti");
+                    } else{
+                        String[] messaggi = risp.split("\\|\\|\\|");
+    
+                        System.out.println("Cronologia messaggi:");
+                        for (String messaggio : messaggi) {
+                            if (!messaggio.trim().isEmpty()) {
+                                messaggio = messaggio.replace("\\|\\|\\|", "\n");
+                                System.out.println(messaggio);
+                            }
+                        }
+                    }
+
+                    System.out.println("Inserisci il messaggio da scrivere");
+                    System.out.println("Apro thread");
+                    tc = new ThreadClient(s0, "^");
+                    tc.start();
+                    do
+                    {
+                        v2 = input.nextLine();
+                        if(!v2.equals("!"))
+                        {
+                            op = "ST- "; 
+
+                            
+                            out.writeBytes(op + v2 + "\n");
+                        }
+                    }while (!v2.equals("!"));
+                    System.out.println("chiudo thread");
+                    tc.setFlag(false);
+
                 break;
             }
 
