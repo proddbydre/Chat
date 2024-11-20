@@ -86,6 +86,12 @@ public class Main {
 
                     System.out.println("Scrivi il nome della persona con cui vuoi comunicare");
                     v1 = input.nextLine();
+                    out.writeBytes("SP- " + v1 + "; |||\n");
+                    String esito = in.readLine();
+                    if (esito.equals("NONE")) {
+                        System.out.println("Destinatario non trovato, ritorno al menù");
+                        break;
+                    }
                     out.writeBytes("VP- " + v1 + "\n");
                     String ris = in.readLine();
                     if (ris.equals("NONE")) {

@@ -37,8 +37,8 @@ public class ThreadClient extends Thread {
             while (flag && !Thread.interrupted()) {
                 if (in.ready()) { // Verifica se ci sono dati disponibili per la lettura
                     String msg = in.readLine();
-                    if (msg.equals("NONE")) {
-                        System.out.println("Destinatario non trovato, uscire dalla chat digitando '!'");
+                    if (msg.equals("OK")) {
+                    } else if (msg.split(":")[1].equals(" |||")) {
                     }else{
                         if (msg.split(":")[0].equals(altroUtente)) {
                             System.out.println(msg);

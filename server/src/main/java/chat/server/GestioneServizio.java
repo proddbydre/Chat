@@ -97,7 +97,10 @@ public class GestioneServizio extends Thread{
                         for (int i = 0; i < dC.getThreads().size(); i++) {
                             if (dC.getThreads().get(i).getName().equals(vals[0].trim())) {
                                 dC.getThreads().get(i).inviaClient(this.getName() + ": " + vals[1].trim());
-                                dC.salvaMessaggio(this.getName(), vals[0].trim(), vals[1]);
+                                if (!vals[1].equals(" |||")) {
+                                    dC.salvaMessaggio(this.getName(), vals[0].trim(), vals[1].trim());    
+                                }
+                                out.writeBytes("OK\n");
                                 inviato = true;
                             }
                         }
