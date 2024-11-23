@@ -119,6 +119,7 @@ public class GestioneServizio extends Thread{
                             }
                             out.writeBytes("OK\n");
                         }
+                        dC.salvaMGlobale(this.getName(), cont);
                         break;
 
                     case "VP":

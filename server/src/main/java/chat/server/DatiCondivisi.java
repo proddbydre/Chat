@@ -15,7 +15,7 @@ public class DatiCondivisi {
     }
 
     public void salvaMessaggio(String mittente, String destinatario, String contenuto) {
-        Messaggio msg = new Messaggio(mittente, contenuto);
+        Messaggio msg = new Messaggio(mittente, destinatario, contenuto);
         messaggi.add(msg);
     }
 

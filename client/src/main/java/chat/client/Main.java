@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) throws UnknownHostException, IOException {
         System.out.println("client partito");
-        Socket s0 = new Socket("172.21.227.125", 3000); //socker che dice indirizzo e porta del server a cui connetersi
+        Socket s0 = new Socket("localhost", 3000); //socker che dice indirizzo e porta del server a cui connetersi
 
         BufferedReader in = new BufferedReader(new InputStreamReader(s0.getInputStream())); //stream dati in
         DataOutputStream out = new DataOutputStream(s0.getOutputStream()); //stream dati out
@@ -109,7 +109,7 @@ public class Main {
                     }
                     System.out.println("Inserisci il messaggio da scrivere");
                     System.out.println("Apro thread");
-                    tc = new ThreadClient(s0, v1);
+                    tc = new ThreadClient(s0, v1, Thread.currentThread().getName());
                     tc.start();
                     do
                     {
@@ -154,7 +154,7 @@ public class Main {
 
                     System.out.println("Inserisci il messaggio da scrivere");
                     System.out.println("Apro thread");
-                    tc = new ThreadClient(s0, "^");
+                    tc = new ThreadClient(s0, "^", Thread.currentThread().getName());
                     tc.start();
                     do
                     {

@@ -8,14 +8,16 @@ import java.net.Socket;
 
 public class ThreadClient extends Thread {
     Socket s0;
+    String mioNome;
     String altroUtente;
     BufferedReader in;
     DataOutputStream out;
     Boolean flag;
 
-    public ThreadClient(Socket s0, String altroUtente) {
+    public ThreadClient(Socket s0, String altroUtente, String mioNome) {
         this.s0 = s0;
         this.altroUtente = altroUtente;
+        this.mioNome = mioNome;
     }
 
     public void setFlag(Boolean flag) {
@@ -38,7 +40,7 @@ public class ThreadClient extends Thread {
                 if (in.ready()) { // Verifica se ci sono dati disponibili per la lettura
                     String msg = in.readLine();
                     if (msg.equals("OK")) {
-                    } else if (msg.split(":")[1].equals(" |||")) {
+                    } else if (msg.split(":")[1].equals(" |||") || (msg.split(":")[0].equals(mioNome))) {
                     }else{
                         if (msg.split(":")[0].equals(altroUtente) || altroUtente.equals("^")) 
                         {
@@ -56,7 +58,7 @@ public class ThreadClient extends Thread {
             if (!flag) {
                 System.out.println("Thread terminato in modo sicuro.");
             } else {
-            e.printStackTrace(); // Stampa il problema se si verifica in circostanze inattese
+                e.printStackTrace();
             }
         } catch (InterruptedException e) {
             System.out.println("Thread interrotto.");
