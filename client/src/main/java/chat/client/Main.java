@@ -48,8 +48,8 @@ public class Main {
         {
             System.out.println("Benvenuto "+  username +  ", inserisci l'operazione desiderata: " + "\n" +
                                 "1 => Visualizzare gli UTENTI connessi" + "\n" +
-                                "2 => Visualizzare i GRUPPI presenti" + "\n" +
-                                "3 => Visualizza chat GLOBALE");
+                                "2 => Visualizza chat GLOBALE\n" + 
+                                "3 => Esci");
 
             azione = input.nextLine();
 
@@ -97,6 +97,8 @@ public class Main {
                     if (ris.equals("NONE")) {
                         System.out.println("No msg precedenti");
                     } else{
+                        ris = ris.replace("CRON:", "");
+
                         String[] messaggi = ris.split("\\|\\|\\|");
     
                         System.out.println("Cronologia messaggi:");
@@ -124,16 +126,11 @@ public class Main {
                     }while (!v2.equals("!"));
                     System.out.println("chiudo thread");
                     tc.setFlag(false);
+                    tc.interrupt();
 
                     break;
 
                 case "2":
-
-                    out.writeBytes("G-" + "\n");
-
-                break;
-
-                case "3":
 
                     out.writeBytes("VT- " + "\n");
 
@@ -141,6 +138,7 @@ public class Main {
                     if (risp.equals("NONE")) {
                         System.out.println("No msg precedenti");
                     } else{
+                        risp = risp.replace("CRON:", "");
                         String[] messaggi = risp.split("\\|\\|\\|");
     
                         System.out.println("Cronologia messaggi:");
@@ -169,7 +167,18 @@ public class Main {
                     }while (!v2.equals("!"));
                     System.out.println("chiudo thread");
                     tc.setFlag(false);
+                    tc.interrupt();
 
+                break;
+
+                case "3":
+                    out.writeBytes("EXIT\n");
+                    in.readLine();
+                    System.out.println("Arrivederci");
+                    azione = "0";
+                    in.close();
+                    out.close();
+                    s0.close();
                 break;
             }
 

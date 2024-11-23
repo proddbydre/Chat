@@ -50,13 +50,21 @@ public class GestioneServizio extends Thread{
             String msg;
             do {
                 msg = in.readLine();
-                System.out.println("Messaggio: " + msg);
-
-                String op = msg.split("-")[0];
-                System.out.println("op: " + op);
-
-                String cont = msg.split("-")[1].trim();
-                System.out.println("cont: " + cont);
+                String op;
+                String cont;
+                if (!msg.equals("EXIT")) {
+                    System.out.println("Messaggio: " + msg);
+    
+                    op = msg.split("-")[0];
+                    System.out.println("op: " + op);
+    
+                    cont = msg.split("-")[1].trim();
+                    System.out.println("cont: " + cont);
+                    
+                } else {
+                    op = msg;
+                    cont = "";
+                }
 
                 String lista;
                 String altroUtente;
@@ -98,7 +106,7 @@ public class GestioneServizio extends Thread{
 
                         for (int i = 0; i < dC.getThreads().size(); i++) {
                             if (dC.getThreads().get(i).getName().equals(vals[0].trim())) {
-                                dC.getThreads().get(i).inviaClient(this.getName() + ": " + vals[1].trim());
+                                dC.getThreads().get(i).inviaClient(this.getName() + ": " + vals[1].trim() + "--P--");
                                 if (!vals[1].equals(" |||")) {
                                     dC.salvaMessaggio(this.getName(), vals[0].trim(), vals[1].trim());    
                                 }
@@ -114,7 +122,7 @@ public class GestioneServizio extends Thread{
                     case "ST":
                         
                         for (int i = 0; i < dC.getThreads().size(); i++) {
-                            if (!dC.getThreads().get(i).equals(this.getName())) {
+                            if (!dC.getThreads().get(i).getName().equals(this.getName())) {
                                 dC.getThreads().get(i).inviaClient(this.getName() + ": " + cont.trim());
                             }
                             out.writeBytes("OK\n");
@@ -140,7 +148,7 @@ public class GestioneServizio extends Thread{
                         if (cronologia.isEmpty()) {
                             out.writeBytes("NONE\n");
                         } else {
-                            out.writeBytes(cronologiaStr.toString() + "\n");
+                            out.writeBytes("CRON:" + cronologiaStr.toString() + "\n");
                         }
                         break;
 
@@ -158,14 +166,24 @@ public class GestioneServizio extends Thread{
                                 .append("\\|\\|\\|");
                             }
 
-                            out.writeBytes(cronGlobStr.toString() + "\n");
+                            out.writeBytes("CRON:" + cronGlobStr.toString() + "\n");
                         }
                         break;
-                
+
+                    case "EXIT": 
+                        System.out.println("Il client si è disconnesso, chiudo");
+                        out.writeBytes("OK\n");
+                        break;
                     default:
+                        System.out.println("Selezionare una delle 3 opzioni");
                         break;
                 }
             } while (!msg.equals("EXIT"));
+            dC.getUtenti().remove(nome);
+            dC.getThreads().remove(this);
+            in.close();
+            out.close();
+            s0.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -39,12 +39,13 @@ public class ThreadClient extends Thread {
             while (flag && !Thread.interrupted()) {
                 if (in.ready()) { // Verifica se ci sono dati disponibili per la lettura
                     String msg = in.readLine();
-                    if (msg.equals("OK")) {
-                    } else if (msg.split(":")[1].equals(" |||") || (msg.split(":")[0].equals(mioNome))) {
-                    }else{
-                        if (msg.split(":")[0].equals(altroUtente) || altroUtente.equals("^")) 
-                        {
-                            System.out.println(msg);
+                    if (msg.equals("OK") || msg.startsWith("CRON:")) {
+                        //NULLA
+                    } else if (msg.split(":")[1].equals(" |||--P--")) {
+                        //NULLA
+                    } else{
+                        if ((msg.split(":")[0].equals(altroUtente) && (msg.contains("--P--"))) || (altroUtente.equals("^")) && (!msg.contains("--P--"))) {
+                            System.out.println(msg.replace("--P--", ""));
                         }
                     }
                 } else {
