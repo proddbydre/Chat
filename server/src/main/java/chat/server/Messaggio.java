@@ -10,7 +10,7 @@ public class Messaggio {
         this.mittente = mittente;
         this.destinatario = destinatario;
         this.contenuto = contenuto;
-        this.timestamp = System.currentTimeMillis();
+        this.timestamp = System.currentTimeMillis(); //ora dell'invio
     }
 
     

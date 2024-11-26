@@ -6,7 +6,7 @@ import java.net.Socket;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        System.out.println("Server in ascolto");
+        System.out.println("Server in ascolto sulla porta 3000");
         @SuppressWarnings("resource")
         ServerSocket sS0 = new ServerSocket(3000); //Porta dove il server aspetta richiesta
         DatiCondivisi dC = new DatiCondivisi();

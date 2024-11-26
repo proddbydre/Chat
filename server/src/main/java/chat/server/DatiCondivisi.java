@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 public class DatiCondivisi {
     ArrayList<String> utenti = new ArrayList<String>();
-    ArrayList<Gruppo> gruppi = new ArrayList<Gruppo>();
     ArrayList<GestioneServizio> threads = new ArrayList<GestioneServizio>();
     ArrayList<Messaggio> messaggi = new ArrayList<Messaggio>();
     ArrayList<Messaggio> messaggiGlobali = new ArrayList<Messaggio>();
@@ -24,7 +23,7 @@ public class DatiCondivisi {
             .filter(msg -> 
                 (msg.getMittente().equals(utente1) && msg.getDestinatario().equals(utente2)) ||
                 (msg.getMittente().equals(utente2) && msg.getDestinatario().equals(utente1)))
-            .collect(Collectors.toList());
+            .collect(Collectors.toList()); //aiutati da IA (si filtrano e poi passano i messaggi che coinvolgono i partecipanti alla chat privata del caso)
     }
 
     public void salvaMGlobale(String mittente, String contenuto){
@@ -40,13 +39,15 @@ public class DatiCondivisi {
         return utenti;
     }
 
-    public ArrayList<Gruppo> getGruppi() {
-        return gruppi;
-    }
-
     public ArrayList<GestioneServizio> getThreads() {
         return threads;
     }
+
+    public ArrayList<Messaggio> getMessaggi() {
+        return messaggi;
+    }
+
+    
 
     
 }

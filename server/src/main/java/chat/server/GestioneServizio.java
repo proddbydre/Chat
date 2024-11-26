@@ -12,7 +12,7 @@ public class GestioneServizio extends Thread{
     Socket s0;
     BufferedReader in;
     DataOutputStream out;
-    DatiCondivisi dC;
+    DatiCondivisi dC; //dati a cui accedono tutti i thread
 
     
 
@@ -36,7 +36,7 @@ public class GestioneServizio extends Thread{
             do {
                 flag = true;
                 nome = in.readLine();
-                if (dC.getUtenti().contains(nome)) {
+                if (dC.getUtenti().contains(nome) ||(nome.trim().isEmpty())) { //se il nome è gia presente o nonn è regolare invio 'KO'
                     flag = false;
                     out.writeBytes("KO\n");
                 }
@@ -50,9 +50,9 @@ public class GestioneServizio extends Thread{
             String msg;
             do {
                 msg = in.readLine();
-                String op;
-                String cont;
-                if (!msg.equals("EXIT")) {
+                String op; //operazione
+                String cont; //contenuto
+                if (!msg.equals("EXIT")) { //se il messaggio non è exit, lo si analizza più a fondo
                     System.out.println("Messaggio: " + msg);
     
                     op = msg.split("-")[0];
@@ -66,8 +66,8 @@ public class GestioneServizio extends Thread{
                     cont = "";
                 }
 
-                String lista;
-                String altroUtente;
+                String lista; //lista nomi utenti
+                String altroUtente; //nome corrispondende del caso
 
                 switch (op) {
                     case "P":
@@ -84,38 +84,24 @@ public class GestioneServizio extends Thread{
                         
                         break;
 
-                    case "G":
-
-                        lista = "";
-                        System.out.println("raccolgo nomiG");
-                        for (int i = 0; i < dC.getGruppi().size(); i++) {
-                                lista += dC.getGruppi().get(i).getNome() + ";";
-                        }
-
-                        System.out.println("invio nomiG");
-
-                        out.writeBytes(lista + "\n");
-                        
-                        break;
-
                     case "SP":
                         
-                        String vals[] = cont.split(";");
+                        String vals[] = cont.split(";"); //divido il contenuto in destinatario[0] e messaggio in sé[1]
 
                         boolean inviato = false;
 
                         for (int i = 0; i < dC.getThreads().size(); i++) {
                             if (dC.getThreads().get(i).getName().equals(vals[0].trim())) {
-                                dC.getThreads().get(i).inviaClient(this.getName() + ": " + vals[1].trim() + "--P--");
-                                if (!vals[1].equals(" |||")) {
-                                    dC.salvaMessaggio(this.getName(), vals[0].trim(), vals[1].trim());    
+                                dC.getThreads().get(i).inviaClient(this.getName() + ": " + vals[1].trim() + "--P--"); //chiamo il metodo del thread associato alla socket
+                                if (!vals[1].equals(" |||")) {                                               //del destinatario per inviare al client il messaggio
+                                    dC.salvaMessaggio(this.getName(), vals[0].trim(), vals[1].trim());  //se il messaggio non è di test, lo salvo nella cronologia della chat   
                                 }
-                                out.writeBytes("OK\n");
+                                out.writeBytes("OK\n"); //invio al mio client la conferma di invio
                                 inviato = true;
                             }
                         }
                         if (!inviato) {
-                            out.writeBytes("NONE\n");
+                            out.writeBytes("NONE\n"); // se non ho trovato il destinatario, invio 'NONE'
                         }
                         break;
 
@@ -123,65 +109,70 @@ public class GestioneServizio extends Thread{
                         
                         for (int i = 0; i < dC.getThreads().size(); i++) {
                             if (!dC.getThreads().get(i).getName().equals(this.getName())) {
-                                dC.getThreads().get(i).inviaClient(this.getName() + ": " + cont.trim());
-                            }
-                            out.writeBytes("OK\n");
+                                dC.getThreads().get(i).inviaClient(this.getName() + ": " + cont.trim()); //chiamo il metodo di tutti i thread associati alle socket
+                            }                                                                            //del destinatario per inviare ai client il messaggio
+                            out.writeBytes("OK\n"); //invio al mio client la conferma di invio
                         }
-                        dC.salvaMGlobale(this.getName(), cont);
+                        dC.salvaMGlobale(this.getName(), cont); //salvo il messaggio in cronologia
                         break;
 
                     case "VP":
                         // Ottiene la cronologia con l'utente specificato
                         altroUtente = cont.trim();
-                        List<Messaggio> cronologia = dC.getCronologiaChat(this.getName(), altroUtente);
+                        List<Messaggio> cronologia = dC.getCronologiaChat(this.getName(), altroUtente); //richiedo la cronologia dei messaggi tra me ed il corrispondente
                         
-                        // Costruisce la stringa di risposta
+                        // Costruisco la stringa di risposta
                         StringBuilder cronologiaStr = new StringBuilder();
                         for (Messaggio m : cronologia) {
                             cronologiaStr.append(m.getMittente())
                                        .append(": ")
                                        .append(m.getContenuto())
-                                       .append("\\|\\|\\|");
+                                       .append("-++-"); //per dividere i messaggi
                         }
                         
-                        // Se non ci sono messaggi, invia "NONE"
+                        // Se non ci sono messaggi, invio "NONE"
                         if (cronologia.isEmpty()) {
                             out.writeBytes("NONE\n");
                         } else {
-                            out.writeBytes("CRON:" + cronologiaStr.toString() + "\n");
+                            out.writeBytes("CRON:" + cronologiaStr.toString() + "\n"); //invio la cronologia con il prefisso 'CRON:'
                         }
                         break;
 
                     case "VT":
                         altroUtente = cont.trim();
-                        ArrayList<Messaggio> cronologiaGlobale = dC.getCronologiaGlobale();
+                        ArrayList<Messaggio> cronologiaGlobale = dC.getCronologiaGlobale(); //richiedo la cronologia
                         if (cronologiaGlobale.isEmpty()) {
-                            out.writeBytes("NONE\n");
+                            out.writeBytes("NONE\n"); //se è vuota, mando 'NONE'
                         } else {
+                            //costruisco la cronologia
                             StringBuilder cronGlobStr = new StringBuilder();
                             for (Messaggio m : cronologiaGlobale) {
                                 cronGlobStr.append(m.getMittente())
                                 .append(": ")
                                 .append(m.getContenuto())
-                                .append("\\|\\|\\|");
+                                .append("-++-");
                             }
 
-                            out.writeBytes("CRON:" + cronGlobStr.toString() + "\n");
+                            out.writeBytes("CRON:" + cronGlobStr.toString() + "\n"); //invio la cronologia con il prefisso 'CRON:'
                         }
                         break;
 
                     case "EXIT": 
                         System.out.println("Il client si è disconnesso, chiudo");
-                        out.writeBytes("OK\n");
+                        out.writeBytes("OK\n"); //invio al client conferma disconnessione
                         break;
                     default:
-                        System.out.println("Selezionare una delle 3 opzioni");
                         break;
                 }
             } while (!msg.equals("EXIT"));
-            dC.getUtenti().remove(nome);
-            dC.getThreads().remove(this);
-            in.close();
+            dC.getUtenti().remove(nome); //tolgo il nome dell'utente dalla lista nomi
+            dC.getThreads().remove(this); //tolgo il thread (this) dalla lista dei thread
+            for (int i = 0; i < dC.getMessaggi().size(); i++) { //cancello le cronologie di messaggi di cui il mio utente fa parte
+                if ((dC.getMessaggi().get(i).getMittente().equals(this.getName())) || (dC.getMessaggi().get(i).getDestinatario().equals(this.getName()))) {
+                    dC.getMessaggi().remove(i);
+                }
+            }
+            in.close(); //chiudo tutto
             out.close();
             s0.close();
         } catch (Exception e) {
@@ -189,6 +180,7 @@ public class GestioneServizio extends Thread{
         }
     }
 
+    //metodo per inviare messaggio al proprio client
     public void inviaClient(String msg){
 
         try {
